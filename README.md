@@ -15,9 +15,6 @@ SQL Implementation
 1️⃣ Creating the Table
 The table Hotel_RES is created to store hotel reservation data, structured with relevant attributes like booking details, pricing, and market segments.
 
-sql
-Copy
-Edit
 CREATE TABLE Hotel_RES (
   Booking_ID VARCHAR(10) PRIMARY KEY,
   No_of_Adults SMALLINT,
@@ -39,13 +36,11 @@ CREATE TABLE Hotel_RES (
   No_of_Special_Requests SMALLINT,
   Booking_Status VARCHAR(25)
 );
-After importing the dataset, we can view the records:
 
-sql
-Copy
-Edit
+After importing the dataset, we can view the records:
 SELECT * FROM Hotel_RES;
-Key SQL Queries and Insights
+
+# Key SQL Queries and Insights : 
 1️⃣ Average Booking Price for Weekdays and Weekends (Jan–March 2017 & 2018)
 Calculates the average price per room for weekdays and weekends for the first three months of each year.
 Uses CTEs to separate weekday and weekend bookings before joining the results.
@@ -72,7 +67,8 @@ ON Weekend_collection.arrival_month = Weekdays_Collection.arrival_month
 AND Weekend_collection.arrival_year = Weekdays_Collection.arrival_year;
 ✅ Insight: No data was available for these months in 2017, so only 2018 results are visible.
 
-2️⃣ Monthly Price Difference for Each Room Type
+2️⃣ Monthly Price Difference for Each Room Type :
+
 Compares the average price per room for consecutive months using the LAG function.
 Identifies fluctuations in room pricing.
 
@@ -93,9 +89,11 @@ SELECT Room_Type_Reserved, CONCAT(arrival_month, '/', arrival_year) AS Month_yea
        Current_Month_avg_price - Prev_Month_Avg_Price AS Price_Difference
 FROM PreviousMonth
 WHERE Prev_Month_Avg_Price != 0;
+
 ✅ Insight: Price changes over time can help in revenue optimization strategies for hotels.
 
-3️⃣ Identifying High Lead Time Bookings (Top 50% by Market Segment)
+3️⃣ Identifying High Lead Time Bookings (Top 50% by Market Segment) :
+
 Finds bookings where lead time is above the median for each market segment.
 Uses PERCENTILE_CONT function to determine the median.
 
@@ -115,9 +113,11 @@ Above_Median AS (
 SELECT Booking_ID, Market_Segment_Type, Lead_Time
 FROM Above_Median
 ORDER BY Market_Segment_Type;
+
 ✅ Insight: Helps in targeting long-term bookings for better customer engagement.
 
-4️⃣ Months with ≥30% Booking Cancellations
+4️⃣ Months with ≥30% Booking Cancellations:
+
 Identifies months where cancellation rates exceed 30%.
 Uses two CTEs to calculate total and canceled bookings before computing the percentage.
 
@@ -140,6 +140,7 @@ INNER JOIN CB
 ON TB.arrival_month = CB.arrival_month
 AND TB.arrival_year = CB.arrival_year
 WHERE (CB.Cancelledbookings * 100) / TB.TotalBookings >= 30;
+
 ✅ Insight: Useful for identifying cancellation trends and improving retention strategies.
 
 Key Learnings & Takeaways
